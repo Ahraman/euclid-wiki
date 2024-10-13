@@ -1,3 +1,5 @@
-use axum::response::IntoResponse;
+use axum::response::{IntoResponse, Redirect};
 
-pub async fn view() -> impl IntoResponse {}
+pub async fn view() -> impl IntoResponse {
+    Redirect::permanent("/w/main")
+}
