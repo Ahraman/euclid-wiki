@@ -1,6 +1,10 @@
 use axum::{routing::get, Router};
+use sqlx::{migrate::MigrateDatabase, Connection, PgConnection, Postgres};
 
-use self::routing::{page, root};
+use self::{
+    error::Error,
+    routing::{page, root},
+};
 
 pub mod error;
 pub mod routing;
@@ -12,4 +16,16 @@ pub fn make_router() -> Router {
             .route("/", get(page::empty))
             .route("/*page", get(page::view)),
     )
+}
+
+pub async fn connect_database(url: &str) -> Result<PgConnection, Error> {
+    println!("Connecting to database at: {url}");
+
+    if !Postgres::database_exists(url).await? {
+        println!("Database not found; creating a new one...");
+
+        Postgres::create_database(url).await?;
+    }
+
+    Ok(PgConnection::connect(url).await?)
 }

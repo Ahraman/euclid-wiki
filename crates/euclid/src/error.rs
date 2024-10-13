@@ -8,5 +8,8 @@ pub enum Error {
     EnvVar(#[from] std::env::VarError),
 
     #[error(transparent)]
+    Sqlx(#[from] sqlx::Error),
+
+    #[error(transparent)]
     Dotenvy(#[from] dotenvy::Error),
 }
