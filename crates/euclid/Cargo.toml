@@ -8,8 +8,18 @@ rust-version.workspace = true
 
 [dependencies]
 thiserror = "1.0.64"
+time = { version = "0.3.36", features = ["macros"] }
 
 tokio = { version = "1.40.0", features = ["rt-multi-thread", "macros"] }
 axum = { version = "0.7.7", features = ["macros"] }
+
+sqlx = { version = "0.8.2", features = [
+    "macros",
+    "migrate",
+    "postgres",
+    "time",
+    "runtime-tokio",
+    "tls-rustls",
+] }
 
 dotenvy = "0.15.7"
