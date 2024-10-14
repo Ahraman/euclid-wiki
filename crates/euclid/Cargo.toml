@@ -9,8 +9,11 @@ rust-version.workspace = true
 [dependencies]
 thiserror = "1.0.64"
 time = { version = "0.3.36", features = ["macros"] }
+serde = { version = "1.0.210", features = ["derive"] }
+serde_json = { version = "1.0.128" }
 
-tokio = { version = "1.40.0", features = ["rt-multi-thread", "macros"] }
+tokio = { version = "1.40.0", features = ["rt-multi-thread", "macros", "fs"] }
+tokio-util = { version = "0.7.7", features = ["io"] }
 axum = { version = "0.7.7", features = ["macros"] }
 
 sqlx = { version = "0.8.2", features = [
@@ -23,3 +26,4 @@ sqlx = { version = "0.8.2", features = [
 ] }
 
 dotenvy = "0.15.7"
+handlebars = "6.1.0"

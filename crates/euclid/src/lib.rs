@@ -1,21 +1,30 @@
+use std::sync::Arc;
+
 use axum::{routing::get, Router};
 use sqlx::{migrate::MigrateDatabase, PgPool, Postgres};
 
 use self::{
+    app::App,
     error::Error,
-    routing::{page, root},
+    routing::{asset, page, reload, root},
 };
 
+pub mod app;
 pub mod error;
 pub mod routing;
 
-pub fn make_router() -> Router {
-    Router::new().route("/", get(root::view)).nest(
-        "/w",
-        Router::new()
-            .route("/", get(page::empty))
-            .route("/*page", get(page::view)),
-    )
+pub fn make_router(app: App) -> Router {
+    Router::new()
+        .route("/", get(root::get))
+        .route("/asset", get(asset::get))
+        .route("/reload", get(reload::get))
+        .nest(
+            "/w",
+            Router::new()
+                .route("/", get(page::empty))
+                .route("/*page", get(page::get)),
+        )
+        .with_state(Arc::new(app))
 }
 
 pub async fn connect_database(url: &str) -> Result<PgPool, Error> {
