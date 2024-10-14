@@ -9,6 +9,8 @@ pub enum Error {
 
     #[error(transparent)]
     Sqlx(#[from] sqlx::Error),
+    #[error(transparent)]
+    SqlxMigrate(#[from] sqlx::migrate::MigrateError),
 
     #[error(transparent)]
     Dotenvy(#[from] dotenvy::Error),

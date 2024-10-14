@@ -1,5 +1,5 @@
 use axum::{routing::get, Router};
-use sqlx::{migrate::MigrateDatabase, Connection, PgConnection, Postgres};
+use sqlx::{migrate::MigrateDatabase, PgPool, Postgres};
 
 use self::{
     error::Error,
@@ -18,7 +18,7 @@ pub fn make_router() -> Router {
     )
 }
 
-pub async fn connect_database(url: &str) -> Result<PgConnection, Error> {
+pub async fn connect_database(url: &str) -> Result<PgPool, Error> {
     println!("Connecting to database at: {url}");
 
     if !Postgres::database_exists(url).await? {
@@ -27,5 +27,7 @@ pub async fn connect_database(url: &str) -> Result<PgConnection, Error> {
         Postgres::create_database(url).await?;
     }
 
-    Ok(PgConnection::connect(url).await?)
+    let conn = PgPool::connect(url).await?;
+    sqlx::migrate!("./migrations").run(&conn).await?;
+    Ok(conn)
 }
