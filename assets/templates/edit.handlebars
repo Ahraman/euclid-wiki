@@ -1,0 +1,14 @@
+{{#*inline "content" }}
+<h1>Editing: {{page.title}}</h1>
+<form accept-charset="utf-8" action="/w/{{page.title}}?action=submit" method="post">
+  <div class="editor-body">
+    <textarea name="content" id="editor-content" autofocus>{{page.content}}</textarea>
+  </div>
+
+  <div class="editor-footer">
+    <input type="submit" name="Submit" />
+  </div>
+</form>
+{{/inline}}
+
+{{> base }}
