@@ -5,6 +5,10 @@ use sqlx::PgPool;
 
 use crate::error::Error;
 
+pub mod asset;
+pub mod page;
+pub mod reload;
+
 pub struct App {
     pub conn_pool: PgPool,
     pub handlebars: RwLock<Handlebars<'static>>,
@@ -39,6 +43,7 @@ impl App {
     fn register_handlebar_templates<'a>(handlebars: &mut Handlebars<'a>) -> Result<(), Error> {
         handlebars.register_template_file("base", "assets/templates/base.handlebars")?;
         handlebars.register_template_file("page", "assets/templates/page.handlebars")?;
+        handlebars.register_template_file("edit", "assets/templates/edit.handlebars")?;
         handlebars.register_template_file("not-found", "assets/templates/not-found.handlebars")?;
 
         Ok(())

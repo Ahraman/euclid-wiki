@@ -21,7 +21,7 @@ pub fn make_router(app: App) -> Router {
         .nest(
             "/w",
             Router::new()
-                .route("/", get(page::empty))
+                .route("/", get(page::root))
                 .route("/*page", get(page::get)),
         )
         .with_state(Arc::new(app))
